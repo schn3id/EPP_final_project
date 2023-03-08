@@ -1,16 +1,6 @@
 #!/usr/bin/env python3
+"""##########################.
 
-# Import packages
-import os
-
-import functions
-import pandas as pd
-
-# Working directory to save files
-path_data = "../../../bld/data/"
-path_bld = path_data + "df"
-
-##########################
 # Data cleaning & Pre-Processing (takes < 10 min)
 ##########################
 # Read pickled file
@@ -37,6 +27,17 @@ df_variables.to_pickle(os.path.join(path_bld, "merged_processed_vars.pickle"))
 ##########################
 ### Merge other data at year-country level
 ##########################
+
+"""
+# Import packages
+import os
+
+import functions
+import pandas as pd
+
+# Working directory to save files
+path_data = "../../../bld/data/"
+path_bld = path_data + "df"
 
 ## Read data
 df = pd.read_pickle(os.path.join(path_bld, "merged_processed_vars.pickle"))

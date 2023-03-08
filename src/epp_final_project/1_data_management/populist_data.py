@@ -77,6 +77,7 @@ def get_populists():
         "United States",
         "Uruguay",
         "Venezuela",
+        "ECB",
     ]
 
     df = pd.DataFrame(columns=["year", "country"])
@@ -241,6 +242,7 @@ def inst_to_country():
         "federal reserve bank of richmond": "United States",
         "central bank of uruguay": "Uruguay",
         "central bank of venezuela": "Venezuela",
+        "european central bank": "ECB",
     }
 
     cb_country = pd.DataFrame(dict.items(), columns=["institution", "country"])

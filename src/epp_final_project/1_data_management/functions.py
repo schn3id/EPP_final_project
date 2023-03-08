@@ -149,12 +149,28 @@ def merge_data(speech_df):
     ## Get other datasets
     populists = populist_data.get_populists()
     cb_to_country = populist_data.inst_to_country()
-    pop_df = pd.merge(populists, cb_to_country, on="country", how="inner")
+    pop_df = pd.merge(populists, cb_to_country, on="country", how="right")
     pop_df["institution"] = pop_df["institution"].astype("str")
     pop_df["year"] = pop_df["year"].astype("int64")
 
     ## Merge datasets
     merged_df = pd.merge(speech_df, pop_df, on=["year", "institution"], how="inner")
+
+    cbi_df = (
+        pd.read_excel("../data/CBIData_Romelli2022.xlsx", sheet_name="CBI Indices")[
+            ["year", "CBIE", "Country"]
+        ]
+        .rename(columns={"Country": "country"})
+        .set_index(["country", "year"])
+    )
+
+    merged_df = pd.merge(
+        merged_df.reset_index().set_index(["country", "year"]),
+        cbi_df,
+        left_index=True,
+        right_index=True,
+        how="left",
+    ).reset_index()
 
     ### Save processed variables
     # Define the columns to be kep
@@ -176,6 +192,7 @@ def merge_data(speech_df):
         "right",
         "left",
         "pop",
+        "CBIE",
     ]
 
     # Save dataset as-is for descriptives
