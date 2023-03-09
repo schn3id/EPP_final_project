@@ -311,7 +311,7 @@ def make_cbi_speech_plot(data):
     return fig
 
 
-def run_regressions(data, table_1, table_2):
+def run_regressions_1(data, table_1):
     """Creates tables for speech attribute on politics and CB dependence regressions.
 
     Parameters:
@@ -394,6 +394,66 @@ def run_regressions(data, table_1, table_2):
     )
     with open(table_1, "w") as f:
         f.write(stargazer.render_latex())
+
+def run_regressions_2(data, table_2):
+    """Creates tables for speech attribute on politics and CB dependence regressions.
+
+    Parameters:
+            data: the dataframe
+            path_tables: the path where tables are stored
+
+    Returns:
+            none (saves 2 tex files as side effect)
+
+    """
+    data_cl = data.reset_index().dropna()
+
+    model_growth_count = sm.OLS.from_formula(
+        "growth_count ~  CBIE*left + CBIE*right",
+        data=data_cl,
+    ).fit(cov_type="cluster", cov_kwds={"groups": data_cl["country"]})
+    model_inflation_count = sm.OLS.from_formula(
+        "inflation_count ~  CBIE*left + CBIE*right",
+        data=data_cl,
+    ).fit(cov_type="cluster", cov_kwds={"groups": data_cl["country"]})
+    model_inequality_count = sm.OLS.from_formula(
+        "inequality_count ~  CBIE*left + CBIE*right",
+        data=data_cl,
+    ).fit(cov_type="cluster", cov_kwds={"groups": data_cl["country"]})
+    model_climate_count = sm.OLS.from_formula(
+        "climate_count ~  CBIE*left + CBIE*right",
+        data=data_cl,
+    ).fit(cov_type="cluster", cov_kwds={"groups": data_cl["country"]})
+    model_num_words = sm.OLS.from_formula(
+        "num_words ~  CBIE*left + CBIE*right",
+        data=data_cl,
+    ).fit(cov_type="cluster", cov_kwds={"groups": data_cl["country"]})
+    model_flesch_ease = sm.OLS.from_formula(
+        "flesch_ease ~  CBIE*left + CBIE*right",
+        data=data_cl,
+    ).fit(cov_type="cluster", cov_kwds={"groups": data_cl["country"]})
+    sm.OLS.from_formula(
+        "flesch_grade ~  CBIE*left + CBIE*right",
+        data=data_cl,
+    ).fit(cov_type="cluster", cov_kwds={"groups": data_cl["country"]})
+    model_ari = sm.OLS.from_formula("ari ~  CBIE*left + CBIE*right", data=data_cl).fit(
+        cov_type="cluster",
+        cov_kwds={"groups": data_cl["country"]},
+    )
+    model_gunning_fog = sm.OLS.from_formula(
+        "gunning_fog ~  CBIE*left + CBIE*right",
+        data=data_cl,
+    ).fit(cov_type="cluster", cov_kwds={"groups": data_cl["country"]})
+    model_sent_subj = sm.OLS.from_formula(
+        "sent_subj ~  CBIE*left + CBIE*right",
+        data=data_cl,
+    ).fit(cov_type="cluster", cov_kwds={"groups": data_cl["country"]})
+    model_sent_pol = sm.OLS.from_formula(
+        "sent_pol ~  CBIE*left + CBIE*right",
+        data=data_cl,
+    ).fit(cov_type="cluster", cov_kwds={"groups": data_cl["country"]})
+
+
 
     stargazer = Stargazer(
         [
