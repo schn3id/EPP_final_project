@@ -6,6 +6,7 @@ channels:
 
 dependencies:
   - conda-lock
+  - Cmake
   - ipykernel
   - jupyterlab
   - pandas
@@ -33,3 +34,8 @@ dependencies:
       - textstat
       - textblob
       - openpyxl
+      - gensim
+      - matplotlib
+      - stargazer
+      - numpy
+      - statsmodels
