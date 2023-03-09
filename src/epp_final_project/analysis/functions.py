@@ -27,10 +27,10 @@ def make_frequencyplot(data, n=200):
         item for sublist in data["lemma_sep"] for item in sublist
     )
     most_common = frequency_distribution.most_common(20)
+
     fig = plt.figure()
     plt.barh(range(len(most_common)), [val[1] for val in most_common], align="center")
     plt.yticks(range(len(most_common)), [val[0] for val in most_common])
-
     return fig
 
 
@@ -312,7 +312,7 @@ def make_cbi_speech_plot(data):
     return fig
 
 
-def run_regressions(data, path_tables):
+def run_regressions(data, table1, table2):
     """Creates tables for speech attribute on politics and CB dependence regressions.
 
     Parameters:
@@ -393,7 +393,7 @@ def run_regressions(data, path_tables):
             len(stargazer.models) // 4,
         ],
     )
-    with open(os.path.join(path_tables, "regressions_part1.tex"), "w") as f:
+    with open(table1, "w") as f:
         f.write(stargazer.render_latex())
 
     stargazer = Stargazer(
@@ -423,7 +423,7 @@ def run_regressions(data, path_tables):
             len(stargazer.models) // 6,
         ],
     )
-    with open(os.path.join(path_tables, "regressions_part2.tex"), "w") as f:
+    with open(table2, "w") as f:
         f.write(stargazer.render_latex())
 
 
