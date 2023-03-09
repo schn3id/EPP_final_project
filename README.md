@@ -34,8 +34,5 @@ This project explores speeches held by central bankers and includes the followin
 
 ### Notes: 
 
-- The project is exclusively written in python. 
-- Scraping and processing the data for the whole period since 1997 takes several hours. To speed up the execution as proof of concept, we included the option to only retain speeches help on the first day of a month. To activate this option, you need to set the argument of function "..\scrape_bis\bis_scraper.py" (line 36) equal to 1. 
-
-
-shorten the period for the scraper in "..\scrape_bis\lists.py" (line 200) by e.g. setting the start year to 2023. 
+- The project is exclusively written in python. Activating the environment should therefore be sufficient. 
+- Scraping and processing the data for the whole period since 1997 takes several hours. To speed up the execution as proof of concept, we included the option to only retain speeches help on the first day of a month. To activate this option, you need to set the argument of function "..\scrape_bis\bis_scraper.py" (line 36) equal to 1.
