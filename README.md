@@ -26,6 +26,7 @@ $ pytask
 
 ### Notes: 
 
+- Both authors contributed equally to the project. 
 - The project is exclusively written in python. Activating the environment should therefore be sufficient. 
 - Scraping and processing the data for the whole period since 1997 takes several hours. To speed up the execution as proof of concept, we included the option to only retain speeches help on the first day of a month. To activate this option, you need to set the argument of function "..\scrape_bis\bis_scraper.py" (line 36) equal to 1 (currently activated).
 - Detailed docstrings are contained in the function definitions themselves, not in the task_* files.
