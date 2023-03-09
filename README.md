@@ -1,9 +1,5 @@
-# EPP Final Project
+# EPP Final Project (Valentin Kecht, Georg Schneider) 
 
-[![image](https://img.shields.io/github/actions/workflow/status/schn3id/epp_final_project/main.yml?branch=main)](https://github.com/schn3id/epp_final_project/actions?query=branch%3Amain) [![image](https://codecov.io/gh/schn3id/epp_final_project/branch/main/graph/badge.svg)](https://codecov.io/gh/schn3id/epp_final_project)
-
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/schn3id/epp_final_project/main.svg)](https://results.pre-commit.ci/latest/github/schn3id/epp_final_project/main)
-[![image](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Usage
 
@@ -20,8 +16,10 @@ To build the project, type
 $ pytask
 ```
 
-## Credits
+## Overview
 
-This project was created with [cookiecutter](https://github.com/audreyr/cookiecutter)
-and the
-[econ-project-templates](https://github.com/OpenSourceEconomics/econ-project-templates).
+This project explores speeches held by central bankers and includes the following steps: 
+
+- scrape all available speeches of central bankers provided by the [BIS](https://www.bis.org/cbspeeches/), extract the text and compile one dataset including all the data. The scraper is partly based on this [code](https://github.com/HanssonMagnus/scrape_bis). 
+- clean and preprocess the data, including tokenization, removal of stop words and lemmatization. We also merge data of left- and right-wing populists as well as information on central bank independence. 
+- the analysis explores descriptively how the discourse 1) has changed over the last 25 years, 2) varies across countries, 3) is influenced by populist governments, and 4) to what extent central bank independence moderates the latter effect
