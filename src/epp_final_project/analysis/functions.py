@@ -9,7 +9,7 @@ import statsmodels.api as sm
 from gensim import corpora  # Create Dictionary
 from nltk.corpus import stopwords
 from stargazer.stargazer import Stargazer
-from wordcloud import WordCloud
+
 
 
 def make_frequencyplot(data, n=200):
@@ -32,7 +32,7 @@ def make_frequencyplot(data, n=200):
     plt.barh(range(len(most_common)), [val[1] for val in most_common], align="center")
     plt.yticks(range(len(most_common)), [val[0] for val in most_common])
     return fig
-
+   
 
 def _make_labels_dict():
     """Creates a dict of labels for column names.
@@ -474,11 +474,20 @@ def make_topic_analysis_plots(data, figpath):
 
     for i, ax in enumerate(axes.flatten()):
         fig.add_subplot(ax)
-        topic_words = dict(topics[i][1])
-        cloud.generate_from_frequencies(topic_words, max_font_size=300)
-        plt.gca().imshow(cloud)
-        plt.gca().set_title("Topic " + str(i), fontdict={"size": 16})
-        plt.gca().axis("off")
+        topic_words = dict(topics[i][1]).to_list()
+        frequency_distribution = Counter(
+        item for sublist in topic_words for item in sublist
+    )
+        most_common = frequency_distribution.most_common(20)
+
+        fig = plt.figure()
+        plt.barh(range(len(most_common)), [val[1] for val in most_common], align="center")
+        plt.yticks(range(len(most_common)), [val[0] for val in most_common])
+        
+        #cloud.generate_from_frequencies(topic_words, max_font_size=300)
+        #plt.gca().imshow(cloud)
+        #plt.gca().set_title("Topic " + str(i), fontdict={"size": 16})
+        #plt.gca().axis("off")
 
     plt.subplots_adjust(wspace=0, hspace=0)
     plt.axis("off")
