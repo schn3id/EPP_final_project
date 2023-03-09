@@ -11,7 +11,6 @@ from nltk.corpus import stopwords
 from stargazer.stargazer import Stargazer
 
 
-
 def make_frequencyplot(data, n=200):
     """Creates frequency plot from a random sample of documents to limit runtime.
 
@@ -32,7 +31,7 @@ def make_frequencyplot(data, n=200):
     plt.barh(range(len(most_common)), [val[1] for val in most_common], align="center")
     plt.yticks(range(len(most_common)), [val[0] for val in most_common])
     return fig
-   
+
 
 def _make_labels_dict():
     """Creates a dict of labels for column names.
@@ -426,72 +425,3 @@ def run_regressions(data, table1, table2):
     with open(table2, "w") as f:
         f.write(stargazer.render_latex())
 
-
-def make_topic_analysis_plots(data, figpath):
-    """Fits topic analysis model and creates plots with wordclouds per topic.
-
-    Parameters:
-            data: the dataframe with a column lemma_sep
-            figpath: a path where figures are saved
-
-    Returns:
-            none (saves figure as side effect)
-
-    """
-    sample = data["lemma_sep"].to_list()
-
-    id2word = corpora.Dictionary(sample)  # Create Corpus
-    texts = sample  # Term Document Frequency
-    corpus = [id2word.doc2bow(text) for text in texts]  # View
-
-    num_topics = 4  # Build LDA model
-
-    lda_model = gensim.models.LdaModel(
-        corpus=corpus,
-        id2word=id2word,
-        num_topics=num_topics,
-    )
-
-    cols = [
-        color for name, color in mcolors.TABLEAU_COLORS.items()
-    ]  # more colors: 'mcolors.XKCD_COLORS'
-
-    stop_words = stopwords.words("english")
-    cloud = WordCloud(
-        stopwords=stop_words,
-        background_color="white",
-        width=2500,
-        height=1800,
-        max_words=10,
-        colormap="tab10",
-        color_func=lambda *args, **kwargs: cols[i],
-        prefer_horizontal=1.0,
-    )
-
-    topics = lda_model.show_topics(formatted=False)
-
-    fig, axes = plt.subplots(2, 2, figsize=(8, 8), sharex=True, sharey=True)
-
-    for i, ax in enumerate(axes.flatten()):
-        fig.add_subplot(ax)
-        topic_words = dict(topics[i][1]).to_list()
-        frequency_distribution = Counter(
-        item for sublist in topic_words for item in sublist
-    )
-        most_common = frequency_distribution.most_common(20)
-
-        fig = plt.figure()
-        plt.barh(range(len(most_common)), [val[1] for val in most_common], align="center")
-        plt.yticks(range(len(most_common)), [val[0] for val in most_common])
-        
-        #cloud.generate_from_frequencies(topic_words, max_font_size=300)
-        #plt.gca().imshow(cloud)
-        #plt.gca().set_title("Topic " + str(i), fontdict={"size": 16})
-        #plt.gca().axis("off")
-
-    plt.subplots_adjust(wspace=0, hspace=0)
-    plt.axis("off")
-    plt.margins(x=0, y=0)
-    plt.tight_layout()
-    plt.show()
-    fig.savefig(os.path.join(figpath, "topic_wordclouds.png"))
