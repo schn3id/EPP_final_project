@@ -15,10 +15,10 @@ from epp_final_project.config import BLD
 
 @pytask.mark.produces({"path_plots": BLD / "plots", "path_tables": BLD / "tables"})
 def task_create_folders(produces):
-    if not os.path.exists(produces["path_data"]):
-        os.makedirs(produces["path_data"])
-    if not os.path.exists(produces["path_scrape"]):
-        os.makedirs(produces["path_scrape"])
+    if not os.path.exists(produces["path_plots"]):
+        os.makedirs(produces["path_plots"])
+    if not os.path.exists(produces["path_tables"]):
+        os.makedirs(produces["path_tables"])
 
 
 # load the data
@@ -27,9 +27,9 @@ def task_create_folders(produces):
 # make plots and tables
 @pytask.mark.depends_on(BLD / "data" / "merged_final_ind.pickle")
 @pytask.mark.produces(BLD / "plots" / "wordcloud.png")
-def task_make_frequency_plot(depends_on, produces):
+def task_make_frequencyplot(depends_on, produces):
     df = pd.read_pickle(depends_on)
-    f.make_frequency_plot(df).savefig(produces)
+    f.make_frequencyplot(df).savefig(produces)
 
 
 @pytask.mark.depends_on(BLD / "data" / "merged_final_ind.pickle")
@@ -70,13 +70,10 @@ def task_make_cbi_speech_plot(depends_on, produces):
 @pytask.mark.depends_on(BLD / "data" / "merged_final_ind.pickle")
 @pytask.mark.produces(
     {
-        "table 1": BLD / "tables" / "table_1.tex",
-        "table 2 ": BLD / "tables" / "table_2.tex",
+        "table_1": BLD / "tables" / "table_1.tex",
+        "table_2 ": BLD / "tables" / "table_2.tex",
     },
 )
 def task_run_regressions(depends_on, produces):
     df = pd.read_pickle(depends_on)
-    f.run_regressions(df, produces["table 1"], produces["table 2"])
-
-
-f.make_topic_analysis_plots(df, path_plots)
+    f.run_regressions(df, produces["table_1"], produces["table_2"])

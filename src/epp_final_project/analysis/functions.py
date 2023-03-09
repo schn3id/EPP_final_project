@@ -311,7 +311,7 @@ def make_cbi_speech_plot(data):
     return fig
 
 
-def run_regressions(data, table1, table2):
+def run_regressions(data, table_1, table_2):
     """Creates tables for speech attribute on politics and CB dependence regressions.
 
     Parameters:
@@ -392,7 +392,7 @@ def run_regressions(data, table1, table2):
             len(stargazer.models) // 4,
         ],
     )
-    with open(table1, "w") as f:
+    with open(table_1, "w") as f:
         f.write(stargazer.render_latex())
 
     stargazer = Stargazer(
@@ -422,6 +422,6 @@ def run_regressions(data, table1, table2):
             len(stargazer.models) // 6,
         ],
     )
-    with open(table2, "w") as f:
+    with open(table_2, "w") as f:
         f.write(stargazer.render_latex())
 

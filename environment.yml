@@ -39,3 +39,5 @@ dependencies:
       - stargazer
       - numpy
       - statsmodels
+      - tcl
+      - tk
