@@ -10,26 +10,20 @@ import pandas as pd
 import pytask
 from epp_final_project.config import BLD
 
-# creating directories
-
 
 @pytask.mark.produces({"path_plots": BLD / "plots", "path_tables": BLD / "tables"})
 def task_create_folders(produces):
-    if not os.path.exists(produces["path_data"]):
-        os.makedirs(produces["path_data"])
-    if not os.path.exists(produces["path_scrape"]):
-        os.makedirs(produces["path_scrape"])
-
-
-# load the data
-
+    if not os.path.exists(produces["path_plots"]):
+        os.makedirs(produces["path_plots"])
+    if not os.path.exists(produces["path_tables"]):
+        os.makedirs(produces["path_tables"])
 
 # make plots and tables
 @pytask.mark.depends_on(BLD / "data" / "merged_final_ind.pickle")
 @pytask.mark.produces(BLD / "plots" / "wordcloud.png")
-def task_make_frequency_plot(depends_on, produces):
+def task_make_frequencyplot(depends_on, produces):
     df = pd.read_pickle(depends_on)
-    f.make_frequency_plot(df).savefig(produces)
+    f.make_frequencyplot(df).savefig(produces)
 
 
 @pytask.mark.depends_on(BLD / "data" / "merged_final_ind.pickle")
