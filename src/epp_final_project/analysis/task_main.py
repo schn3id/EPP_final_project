@@ -1,47 +1,37 @@
 #!/usr/bin/env python3
-"""
-Outcomes already included:
-    1. Frequencies of lemmas & occurrences of some topics
-    2. Complexity
-    3. Sentiment Analysis
-Possible Other Outcomes:
-    1. Ngrams
-    2. Variables from Topic Modelling.
 
-Q: Does Cb Communication change during populist governments?
 
-Analysis:
-    - Descriptives
-    - reg outcome ~ political variable
-
-"""
-
+# Import packages
 # Import packages
 import os
 
-import functions as f
+import epp_final_project.analysis.functions as f
 import pandas as pd
+import pytask
+from epp_final_project.config import BLD
 
 # Working directory to save files
-path_data = "../../../bld/data/"
-path_df = path_data + "df"
-path_plots = "../../../bld/plots"
-path_tables = "../../../bld/tables"
 
 # creating directories
 
 
-f._make_folders([path_plots, path_tables])
+@pytask.mark.produces({"path_plots": BLD / "plots", "path_tables": BLD / "tables"})
+def task_create_folders(produces):
+    if not os.path.exists(produces["path_data"]):
+        os.makedirs(produces["path_data"])
+    if not os.path.exists(produces["path_scrape"]):
+        os.makedirs(produces["path_scrape"])
 
 
 # load the data
 
-df = pd.read_pickle(os.path.join(path_df, "merged_final_ind.pickle"))
 
 # make plots and tables
-
-
-f.make_wordcloud(df).savefig(os.path.join(path_plots, "wordcloud.png"))
+@pytask.mark.depends_on(BLD / "data" / "merged_final_ind.pickle")
+@pytask.mark.produces(BLD / "plots" / "wordcloud.png")
+def task_make_frequency_plot(depends_on, produces):
+    df = pd.read_pickle(depends_on)
+    f.make_frequency_plot(df).savefig(produces)
 
 
 f.make_historical_plots(df).savefig(os.path.join(path_plots, "historical_plots.png"))

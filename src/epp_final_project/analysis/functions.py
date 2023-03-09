@@ -1,4 +1,5 @@
 import os
+from collections import Counter
 
 import gensim
 import matplotlib.colors as mcolors
@@ -11,14 +12,8 @@ from stargazer.stargazer import Stargazer
 from wordcloud import WordCloud
 
 
-def _make_folders(paths):
-    for path in paths:
-        if not os.path.exists(path):
-            os.mkdir(path)
-
-
-def make_wordcloud(data, n=200):
-    """Creates wordcloud plot from a random sample of documents to limit runtime.
+def make_frequencyplot(data, n=200):
+    """Creates frequency plot from a random sample of documents to limit runtime.
 
     Parameters:
             data: the dataframe
@@ -28,17 +23,13 @@ def make_wordcloud(data, n=200):
             a figure object
 
     """
-    # combine words from n speeches, if we use all it would take forever
-    text = " ".join(str(x) for x in data["lemma_sep"].sample(n=n, random_state=1))
-
-    # make wordcloud plot
-    wordcloud = WordCloud(background_color="white", height=3000, width=3000).generate(
-        text,
+    frequency_distribution = Counter(
+        item for sublist in data["lemma_sep"] for item in sublist
     )
-
+    most_common = frequency_distribution.most_common(20)
     fig = plt.figure()
-    plt.imshow(wordcloud, interpolation="bilinear")
-    plt.axis("off")
+    plt.barh(range(len(most_common)), [val[1] for val in most_common], align="center")
+    plt.yticks(range(len(most_common)), [val[0] for val in most_common])
 
     return fig
 
