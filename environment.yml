@@ -28,3 +28,8 @@ dependencies:
   - pip:
       - -e .
       - kaleido
+      - textract
+      - nltk
+      - textstat
+      - textblob
+      - openpyxl

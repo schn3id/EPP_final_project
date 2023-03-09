@@ -21,11 +21,7 @@ nltk.download("maxent_ne_chunker")
 nltk.download("words")
 
 # Import scripts
-import populist_data
-
-# Working directory to save files
-path_data = "../../../bld/data/"
-path_bld = path_data + "df"
+import epp_final_project.data_management.populist_data as populist_data
 
 
 ##########################
@@ -141,7 +137,7 @@ def generate_variables(df):
 ##########################
 
 
-def merge_data(speech_df):
+def merge_data(speech_df, cbi_df_path):
     speech_df["institution"] = speech_df["institution"].astype("str")
     speech_df["institution"] = speech_df["institution"].str.replace(" ", "", 1)
     speech_df["year"] = speech_df["year"].astype("int64")
@@ -157,7 +153,7 @@ def merge_data(speech_df):
     merged_df = pd.merge(speech_df, pop_df, on=["year", "institution"], how="inner")
 
     cbi_df = (
-        pd.read_excel("../data/CBIData_Romelli2022.xlsx", sheet_name="CBI Indices")[
+        pd.read_excel(cbi_df_path, sheet_name="CBI Indices")[
             ["year", "CBIE", "Country"]
         ]
         .rename(columns={"Country": "country"})

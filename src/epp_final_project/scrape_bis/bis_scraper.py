@@ -5,7 +5,8 @@ import os
 import string
 
 # Import lists
-import lists
+import epp_final_project.scrape_bis.lists as lists
+
 import pandas as pd
 import requests
 import textract
@@ -14,7 +15,7 @@ from bs4 import BeautifulSoup as bs
 ### Function for scraping the data
 
 
-def bis_scraper(wd, institutions, date_list):
+def bis_scraper(wd):
     """Scrapes all available speeches on the BIS homepage.
 
     Args:
@@ -27,6 +28,13 @@ def bis_scraper(wd, institutions, date_list):
         pdf's with speeches
 
     """
+
+    # Create list of institutions.
+    institutions = lists.institutions
+
+    # Create datelist
+    date_list = lists.date_list()
+
     # Create list of the alphabet
     letters = list(string.ascii_lowercase)
 
@@ -189,14 +197,14 @@ def bis_scraper(wd, institutions, date_list):
 ### Function for transforming the data in txt files
 
 
-def pdf_to_txt(wd):
+def pdf_to_txt(wd, out):
     """Transfers txt files to pdfs, deletes pdf.
 
     Args:
         wd: string where pdf's are stored
 
     """
-    files = list(glob.glob(wd + "/*.pdf"))
+    files = list(glob.glob(os.path.join(wd, "*.pdf")))
 
     for file in files:
 
@@ -209,7 +217,7 @@ def pdf_to_txt(wd):
             file_name = os.path.basename(file)
 
             # Save list of strings to file
-            path_file_out = os.path.join(wd, file_name + ".txt")
+            path_file_out = os.path.join(out, file_name + ".txt")
 
             with open(path_file_out, "w") as f:
                 f.write(text)
@@ -224,7 +232,7 @@ def pdf_to_txt(wd):
 ### Function that combines everything into one dataset
 
 
-def construct_dataset(wd):
+def construct_dataset(wd_text, wd_meta):
     """Constructs dataset containing all speeches from meta_data and individual
     textfiles.
 
@@ -234,7 +242,7 @@ def construct_dataset(wd):
 
     """
     # Load file
-    with open(os.path.join(wd, "meta_data.txt").replace("\\", "/")) as f:
+    with open(os.path.join(wd_meta, "meta_data.txt").replace("\\", "/")) as f:
         df = f.readlines()
     df = pd.DataFrame(df, columns=["column_name"])
 
@@ -257,7 +265,7 @@ def construct_dataset(wd):
     # loop over filenames and load corresponding text file
     for i, filename in enumerate(df["filename"]):
         try:
-            with open(os.path.join(wd, filename + ".pdf.txt")) as file:
+            with open(os.path.join(wd_text, filename + ".pdf.txt")) as file:
                 text = file.read()
                 df.at[i, "speech"] = text
         except:
