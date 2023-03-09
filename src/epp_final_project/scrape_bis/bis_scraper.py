@@ -32,8 +32,8 @@ def bis_scraper(wd):
     # Create list of institutions.
     institutions = lists.institutions
 
-    # Create datelist
-    date_list = lists.date_list()
+    # Create datelist: set argument equal to 1 to only retain the first day of the month
+    date_list = lists.date_list(1)
 
     # Create list of the alphabet
     letters = list(string.ascii_lowercase)
@@ -242,7 +242,7 @@ def construct_dataset(wd_text, wd_meta):
 
     """
     # Load file
-    with open(os.path.join(wd_meta, "meta_data.txt").replace("\\", "/")) as f:
+    with open(os.path.join(wd_meta, "meta_data.txt").replace("\\", "/"), encoding="utf-8") as f:
         df = f.readlines()
     df = pd.DataFrame(df, columns=["column_name"])
 

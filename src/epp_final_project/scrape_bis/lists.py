@@ -190,21 +190,41 @@ inst_austria = [
 ]
 
 # Create List of Dates
-def date_list():
+def date_list(small):
     """
     Returns:
         date_list: list of dates in format 210101,
         from 970106 (first BIS speech) to today.
+
+    Args: 
+        small: returns on the first day of the month to speed up computation
     """
+    
     today = dt.date.today()
     start = dt.date(1997, 1, 6)
-
-    delta = today - start
     date_list = []
 
-    for i in range(delta.days + 1):
-        day = start + dt.timedelta(days=i)
-        day = day.strftime("%y%m%d")
-        date_list.append(day)
+    if small == 1:
+        # Start at the first day of the start month
+        day = dt.date(start.year, start.month, 1)
+
+        while day <= today:
+            # Add the current day to the list
+            date_list.append(day.strftime("%y%m%d"))
+            
+            # Move to the first day of the next month
+            if day.month == 12:
+                day = dt.date(day.year + 1, 1, 1)
+            else:
+                day = dt.date(day.year, day.month + 1, 1)
+
+    else: 
+
+        delta = today - start
+
+        for i in range(delta.days + 1):
+            day = start + dt.timedelta(days=i)
+            day = day.strftime("%y%m%d")
+            date_list.append(day)
 
     return date_list

@@ -13,7 +13,6 @@ import epp_final_project.scrape_bis.bis_scraper as f
 ##########################
 # Call BIS scraper 
 ##########################
-'''
 @pytask.mark.produces(
     {
         "path_data": BLD / "data",
@@ -26,7 +25,6 @@ def task_bis_scraper(produces):
     if not os.path.exists(produces["path_scrape"]):
         os.makedirs(produces["path_scrape"])
     f.bis_scraper(produces["path_scrape"])
-'''
 
 ##########################
 # Call function that transforms pdf's into txts 
